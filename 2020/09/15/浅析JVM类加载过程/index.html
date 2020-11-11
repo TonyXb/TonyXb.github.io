@@ -1,0 +1,273 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>浅析JVM类加载过程 | Alan_</title><meta name="keywords" content="Code Change The Word"><meta name="author" content="Alan_"><meta name="copyright" content="Alan_"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="什么是虚拟机类加载机制？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅析JVM类加载过程">
+<meta property="og:url" content="http://example.com/2020/09/15/%E6%B5%85%E6%9E%90JVM%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Alan_">
+<meta property="og:description" content="什么是虚拟机类加载机制？">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2020-09-14T22:11:47.000Z">
+<meta property="article:modified_time" content="2020-09-14T23:04:25.171Z">
+<meta property="article:author" content="Alan_">
+<meta property="article:tag" content="Code Change The Word">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/head.jpg"><link rel="canonical" href="http://example.com/2020/09/15/%E6%B5%85%E6%9E%90JVM%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css"><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: '',
+  enable_page_level_ads: 'true'
+});</script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"top-center"},
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-09-15 07:04:25'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/head.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">25</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Alan_</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">浅析JVM类加载过程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-09-14T22:11:47.000Z" title="发表于 2020-09-15 06:11:47">2020-09-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-09-14T23:04:25.171Z" title="更新于 2020-09-15 07:04:25">2020-09-15</time></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="什么是虚拟机类加载机制？"><a href="#什么是虚拟机类加载机制？" class="headerlink" title="什么是虚拟机类加载机制？"></a>什么是虚拟机类加载机制？</h1><a id="more"></a>
+
+<ul>
+<li>类加载机制是指，Java虚拟机把描述类的数据从Class文件加载到内存，并对数据进行检验，转换，解析，和初始化的过程，最终形成可以被虚拟机直接使用的Java类型，这个过程称为类加载机制</li>
+</ul>
+<h1 id="一-类加载的时机"><a href="#一-类加载的时机" class="headerlink" title="一.类加载的时机"></a>一.类加载的时机</h1><h2 id="1-类的生命周期"><a href="#1-类的生命周期" class="headerlink" title="1. 类的生命周期"></a>1. 类的生命周期</h2><ol>
+<li>加载-&gt;验证-&gt;准备-&gt;解析-&gt;初始化-&gt;使用-&gt;卸载</li>
+<li>验证，准备，解析，三部分成为连接</li>
+<li>解析有时候可以在初始化之后进行，为了支持动态绑定。</li>
+</ol>
+<h2 id="2-必须初始化的时刻"><a href="#2-必须初始化的时刻" class="headerlink" title="2. 必须初始化的时刻"></a>2. 必须初始化的时刻</h2><ol>
+<li>遇到 new ,getstatic,putstatic,invokestatic这四条字节码指令时</li>
+<li>使用Java反射包方法对类型进行反射调用时</li>
+<li>初始化类时，父类还没初始化</li>
+<li>虚拟机启动时，用户需要指定一个需要执行的主类</li>
+</ol>
+<h1 id="二-类加载过程"><a href="#二-类加载过程" class="headerlink" title="二.类加载过程"></a>二.类加载过程</h1><h2 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h2><ol>
+<li>通过一个类的全限定名来获取定义此类的二进制字节流</li>
+<li>将这个字节流代表的静态存储结构转化为方法区的运行时存储结构</li>
+<li>在内存中生成一个代表这个类的Class对象，作为方法区这个类的各种数据的访问入口</li>
+<li>加载阶段结束后，外部二进制字节流就按照虚拟机假定的格式存储在方法区中</li>
+</ol>
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><ol>
+<li>文件格式格式验证<ol>
+<li>保证输入字节流正确的解析，并存储于方法区之内</li>
+<li>基于二进制字节流进行的</li>
+</ol>
+</li>
+<li>元数据验证<ol>
+<li>对字节码描述的信息进行语义分析，保证描述信息符合Java语法规范</li>
+</ol>
+</li>
+<li>字节码验证</li>
+<li>符号引用验证<ol>
+<li>将符号引用转化为直接引用时，进行校验</li>
+<li>看该类是否缺少或被禁止访问它依赖的某些外部类，方法，字段等</li>
+</ol>
+</li>
+</ol>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>正式为类中定义的变量(静态变量)分配内存并设置变量初始值的阶段</p>
+<ol>
+<li>此时进行内存分配的只有类变量，不包括实例变量</li>
+<li>初始值是数据的零值</li>
+<li>public static int value=123;此时value初始值为0，而不是123，到初始化阶段才会被赋123</li>
+</ol>
+<h2 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h2><ol>
+<li>将符号引用转化为直接引用的阶段<ol>
+<li>符号引用:任何形式的字面量(String a=”a”,a就是字面量)</li>
+<li>直接引用：直接指向目标指针，偏移量或间接定位到目标的句柄，于内存布局有关</li>
+</ol>
+</li>
+<li>类或接口的解析<ol>
+<li>D类中有个从未解析过的符号引用N，解析为一个类或接口C的直接引用</li>
+<li>C不是数组类型，代表N的全限定名传递给D的类加载器加载C</li>
+<li>C是数组类型，元素类型为对象，按第一点加载数组元素类型，虚拟机生成一个代表该数组维度和元素的数组对象</li>
+<li>上述两布成功，C在虚拟机中已经成为一个有效的类或接口了，在进行符号引用验证，确保D是否对C有访问权限</li>
+</ol>
+</li>
+<li>字段解析<ol>
+<li>C本身包含简单名称和字段描述符都与目标相匹配的字段，返回直接引用</li>
+</ol>
+</li>
+<li>方法解析<ol>
+<li>先判断C是不是接口，如果是接口抛出异常</li>
+</ol>
+</li>
+<li>接口方法解析<ol>
+<li>如果C不是接口，抛出异常</li>
+</ol>
+</li>
+</ol>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><ol>
+<li>执行类构造器init()方法的过程</li>
+<li>编译器自动收集类中所有类变量的赋值操作和静态语句块中语句合并产生的变量</li>
+<li>与类构造函数不同，不需要显示调用父类构造器，Java虚拟机保证在子类init()方法执行前，父类init()方法已执行完毕</li>
+<li>父类中的静态语句块优于子类的变量赋值操作，因此父类的init()方法先执行</li>
+<li>对于类或接口不是必须的，如果类中没有静态语句块，也没有对变量的赋值操作，那么编译器可以不为这个类生成init()方法</li>
+</ol>
+<h1 id="三-类加载器"><a href="#三-类加载器" class="headerlink" title="三. 类加载器"></a>三. 类加载器</h1><p>“通过一个类的的全限定类名获取描述该类的二进制流”这个动作放到Java虚拟机外部实现，便于让应用程序决定如何获取所需的类</p>
+<h2 id="1-类与类加载器"><a href="#1-类与类加载器" class="headerlink" title="1.类与类加载器"></a>1.类与类加载器</h2><p>任意一个类，由加载他的类加载器和它本身一起共同确立其在Java虚拟机中唯一性，只有加载类的类加载器是同一个，才认定这两个类相等</p>
+<h2 id="2-三层类加载器"><a href="#2-三层类加载器" class="headerlink" title="2.三层类加载器"></a>2.三层类加载器</h2><ol>
+<li>启动类加载器</li>
+<li>扩展类加载器</li>
+<li>应用程序类加载器</li>
+</ol>
+<h2 id="3-双亲委派模型"><a href="#3-双亲委派模型" class="headerlink" title="3.双亲委派模型"></a>3.双亲委派模型</h2><p>从Java虚拟机角度看，只存在两种不同的累加载器</p>
+<ol>
+<li>启动类加载器，虚拟机的一部分，c语言编写，存放核心类</li>
+<li>其他类加载器，都由Java实现，独立存在于虚拟机外部，都继承自抽象类java.lang.ClassLoader</li>
+</ol>
+<p>工作流程：如果一个类加载器收到了类加载的请求，它首先不会自己去尝试加载这个类，而是把这个请求委派给父类加载器去完成</p>
+<h3 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h3><ol>
+<li>所有类加载请求都会被传到启动类加载器</li>
+<li>只有父类加载器反馈自己无法完成加载，子加载器才自己去完成加载</li>
+</ol>
+<h3 id="实现："><a href="#实现：" class="headerlink" title="实现："></a>实现：</h3><ol>
+<li>检查该类是否已被加载</li>
+<li>将类加载请求委派给父类<ol>
+<li>如果父类加载器为null，默认使用启动类加载器</li>
+</ol>
+</li>
+<li>父类加载器加载失败时<ol>
+<li>捕获异常吗，不做任何处理</li>
+<li>调用自己的findClass()去加载</li>
+</ol>
+</li>
+<li>优点：<ul>
+<li>Java类随着它的类加载器一起具备了带有优先层级二点关系</li>
+<li>保护核心API，避免重复加载类造成覆盖。</li>
+</ul>
+</li>
+</ol>
+</article><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/09/15/Redis%E9%98%B6%E6%AE%B5%E6%80%A7%E6%80%BB%E7%BB%93/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Redis阶段性总结</div></div></a></div><div class="next-post pull-right"><a href="/2020/09/13/synchronized%E4%B8%8E%E9%94%81%E6%9C%BA%E5%88%B6/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">synchronized与锁机制</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Alan_</div><div class="author-info__description">Code Change The Word</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">25</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Alan-Joker" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:tony_xb@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=1623249948&amp;site=qq&amp;menu=yes" target="_blank" title="QQ"><i class="fab fa-qq"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">什么是虚拟机类加载机制？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E7%9A%84%E6%97%B6%E6%9C%BA"><span class="toc-number">2.</span> <span class="toc-text">一.类加载的时机</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%B1%BB%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">2.1.</span> <span class="toc-text">1. 类的生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%BF%85%E9%A1%BB%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E6%97%B6%E5%88%BB"><span class="toc-number">2.2.</span> <span class="toc-text">2. 必须初始化的时刻</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">二.类加载过程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A0%E8%BD%BD"><span class="toc-number">3.1.</span> <span class="toc-text">加载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81"><span class="toc-number">3.2.</span> <span class="toc-text">验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87"><span class="toc-number">3.3.</span> <span class="toc-text">准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90"><span class="toc-number">3.4.</span> <span class="toc-text">解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">3.5.</span> <span class="toc-text">初始化</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="toc-number">4.</span> <span class="toc-text">三. 类加载器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%B1%BB%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="toc-number">4.1.</span> <span class="toc-text">1.类与类加载器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%B8%89%E5%B1%82%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="toc-number">4.2.</span> <span class="toc-text">2.三层类加载器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.3.</span> <span class="toc-text">3.双亲委派模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A"><span class="toc-number">4.3.1.</span> <span class="toc-text">注意：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%EF%BC%9A"><span class="toc-number">4.3.2.</span> <span class="toc-text">实现：</span></a></li></ol></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2020/11/10/%E9%94%81%E5%8D%87%E7%BA%A7%E4%B8%8E%E5%AF%B9%E6%AF%94/" title="锁升级与对比"><img src="/pic/%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="锁升级与对比"/></a><div class="content"><a class="title" href="/2020/11/10/%E9%94%81%E5%8D%87%E7%BA%A7%E4%B8%8E%E5%AF%B9%E6%AF%94/" title="锁升级与对比">锁升级与对比</a><time datetime="2020-11-10T14:07:44.000Z" title="发表于 2020-11-10 22:07:44">2020-11-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/11/10/AQS%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/" title="AQS源码解读"><img src="https://img-blog.csdnimg.cn/20201024103405147.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1RaODQ1MTk1NDg1,size_16,color_FFFFFF,t_70#pic_center" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AQS源码解读"/></a><div class="content"><a class="title" href="/2020/11/10/AQS%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/" title="AQS源码解读">AQS源码解读</a><time datetime="2020-11-10T13:31:06.000Z" title="发表于 2020-11-10 21:31:06">2020-11-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/10/16/Java%E5%90%8E%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0-Java%E8%99%9A%E6%8B%9F%E6%9C%BA/" title="Java后端基础复习---Java虚拟机"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Java后端基础复习---Java虚拟机"/></a><div class="content"><a class="title" href="/2020/10/16/Java%E5%90%8E%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0-Java%E8%99%9A%E6%8B%9F%E6%9C%BA/" title="Java后端基础复习---Java虚拟机">Java后端基础复习---Java虚拟机</a><time datetime="2020-10-16T08:14:15.000Z" title="发表于 2020-10-16 16:14:15">2020-10-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/10/14/Java%E5%90%8E%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0-Java%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/" title="Java后端基础复习---Java语言基础"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Java后端基础复习---Java语言基础"/></a><div class="content"><a class="title" href="/2020/10/14/Java%E5%90%8E%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0-Java%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/" title="Java后端基础复习---Java语言基础">Java后端基础复习---Java语言基础</a><time datetime="2020-10-14T09:28:19.000Z" title="发表于 2020-10-14 17:28:19">2020-10-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/10/07/JVM%E9%98%B6%E6%AE%B5%E6%80%A7%E6%80%BB%E7%BB%93/" title="JVM阶段性总结"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JVM阶段性总结"/></a><div class="content"><a class="title" href="/2020/10/07/JVM%E9%98%B6%E6%AE%B5%E6%80%A7%E6%80%BB%E7%BB%93/" title="JVM阶段性总结">JVM阶段性总结</a><time datetime="2020-10-07T12:07:44.000Z" title="发表于 2020-10-07 20:07:44">2020-10-07</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By Alan_</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="true"></script></div></body></html>

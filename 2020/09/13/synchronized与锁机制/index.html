@@ -1,0 +1,281 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>synchronized与锁机制 | Alan_</title><meta name="keywords" content="Code Change The Word"><meta name="author" content="Alan_"><meta name="copyright" content="Alan_"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="Synchronized">
+<meta property="og:type" content="article">
+<meta property="og:title" content="synchronized与锁机制">
+<meta property="og:url" content="http://example.com/2020/09/13/synchronized%E4%B8%8E%E9%94%81%E6%9C%BA%E5%88%B6/index.html">
+<meta property="og:site_name" content="Alan_">
+<meta property="og:description" content="Synchronized">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2020-09-13T03:05:42.000Z">
+<meta property="article:modified_time" content="2020-09-13T11:43:32.950Z">
+<meta property="article:author" content="Alan_">
+<meta property="article:tag" content="Code Change The Word">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/head.jpg"><link rel="canonical" href="http://example.com/2020/09/13/synchronized%E4%B8%8E%E9%94%81%E6%9C%BA%E5%88%B6/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css"><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: '',
+  enable_page_level_ads: 'true'
+});</script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"top-center"},
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-09-13 19:43:32'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/head.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">25</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Alan_</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">synchronized与锁机制</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-09-13T03:05:42.000Z" title="发表于 2020-09-13 11:05:42">2020-09-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-09-13T11:43:32.950Z" title="更新于 2020-09-13 19:43:32">2020-09-13</time></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>8分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Synchronized"><a href="#Synchronized" class="headerlink" title="Synchronized"></a>Synchronized</h1><a id="more"></a>
+
+<p>说到锁，我们通常会谈到 synchronized 这个关键字。它翻译成中⽂就是“同步”的意 思。我们通常使⽤ synchronized 关键字来给⼀段代码或⼀个⽅法上锁。它通常有以下 三种形式：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 关键字在实例⽅法上，锁为当前实例</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">instanceLock</span><span class="params">()</span> </span>&#123;</span><br><span class="line"> <span class="comment">// code</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 关键字在静态⽅法上，锁为当前Class对象</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">classLock</span><span class="params">()</span> </span>&#123;</span><br><span class="line"> <span class="comment">// code</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 关键字在代码块上，锁为括号⾥⾯的对象</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">blockLock</span><span class="params">()</span> </span>&#123;</span><br><span class="line"> Object o = <span class="keyword">new</span> Object();</span><br><span class="line"> <span class="keyword">synchronized</span> (o) &#123;</span><br><span class="line"> <span class="comment">// code</span></span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    们这⾥介绍⼀下“临界区”的概念。所谓“临界区”，指的是某⼀块代码区域，它同 ⼀时刻只能由⼀个线程执⾏。在上⾯的例⼦中，如果 synchronized 关键字在⽅法上，那临界区就是整个⽅法内部。⽽如果是使⽤synchronized代码块，那临界区就 指的是代码块内部的区域</p>
+<h1 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h1><p>​    Java 6 为了减少获得锁和释放锁带来的性能消耗，引⼊了“偏向锁”和“轻量级锁“。 在Java 6 以前，所有的锁都是”重量级“锁。所以在Java 6 及其以后，⼀个对象其实 有四种锁状态，它们级别由低到⾼依次是： 无锁状态-&gt;偏向锁状态-&gt;轻量级锁状态-&gt;重量级锁状态</p>
+<p>⽆锁就是没有对资源进⾏锁定，任何线程都可以尝试去修改它，⽆锁在这⾥不再细讲。⼏种锁会随着竞争情况逐渐升级，锁的升级很容易发⽣，但是锁降级发⽣的条件会⽐较苛刻，锁降级发⽣在Stop The World期间，当JVM进⼊安全点的时候，会检查 是否有闲置的锁，然后进⾏降级。</p>
+<h2 id="Java对象头"><a href="#Java对象头" class="headerlink" title="Java对象头"></a>Java对象头</h2><p>MarkWord格式</p>
+<table>
+<thead>
+<tr>
+<th>锁状态</th>
+<th>29bit或61bit</th>
+<th>1bit是否为偏向锁</th>
+<th>2 bit 锁标志位</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>无锁</td>
+<td></td>
+<td>0</td>
+<td>01</td>
+</tr>
+<tr>
+<td>偏向锁</td>
+<td>线程ID</td>
+<td>1</td>
+<td>01</td>
+</tr>
+<tr>
+<td>轻量级锁</td>
+<td>指向栈中锁记录的指针</td>
+<td>此时这⼀位不⽤于标 识偏向锁</td>
+<td>00</td>
+</tr>
+<tr>
+<td>重量级锁</td>
+<td>指向互斥量（重量级锁）的指针</td>
+<td>此时这⼀位不⽤于标识偏向锁</td>
+<td>10</td>
+</tr>
+<tr>
+<td>GC标记</td>
+<td></td>
+<td>此时这⼀位不⽤于标</td>
+<td>11</td>
+</tr>
+</tbody></table>
+<p>​    可以看到，当对象状态为偏向锁时， Mark Word 存储的是偏向的线程ID；当状态为 轻量级锁时， Mark Word 存储的是指向线程栈中 Lock Record 的指针；当状态为重 量级锁时， Mark Word 为指向堆中的monitor对象的指针。</p>
+<h2 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h2><h3 id="1-概述："><a href="#1-概述：" class="headerlink" title="1.概述："></a>1.概述：</h3><p>Hotspot的作者经过以往的研究发现⼤多数情况下锁不仅不存在多线程竞争，⽽且 总是由同⼀线程多次获得，于是引⼊了偏向锁。 </p>
+<p>偏向锁会偏向于第⼀个访问锁的线程，如果在接下来的运⾏过程中，该锁没有被其 他的线程访问，则持有偏向锁的线程将永远不需要触发同步。也就是说，偏向锁在 资源⽆竞争情况下消除了同步语句，连<strong>CAS</strong>操作都不做了，提⾼了程序的运⾏性能。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">简单来说就是对锁置个变量，如果发现为true，代表资源⽆竞争，则⽆需再⾛ 各种加锁&#x2F;解锁流程。如果为false，代表存在其他线程竞争资源，那么就会⾛ 后⾯的流程。</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-实现原理"><a href="#2-实现原理" class="headerlink" title="2.实现原理"></a>2.实现原理</h3><p>⼀个线程在第⼀次进⼊同步块时，会在对象头和栈帧中的锁记录⾥存储锁的偏向的 线程ID。当下次该线程进⼊这个同步块时，会去检查锁的Mark Word⾥⾯是不是放 的⾃⼰的线程ID。 如果是，表明该线程已经获得了锁，以后该线程在进⼊和退出同步块时不需要花费CAS操作来加锁和解锁 ；如果不是，就代表有另⼀个线程来竞争这个偏向锁。这 个时候会尝试使⽤CAS来替换Mark Word⾥⾯的线程ID为新线程的ID，这个时候要 分两种情况： </p>
+<ul>
+<li>成功，表示之前的线程不存在了， Mark Word⾥⾯的线程ID为新线程的ID，锁不会升级，仍然为偏向锁； </li>
+<li>失败，表示之前的线程仍然存在，那么暂停之前的线程，设置偏向锁标识为 0，并设置锁标志位为00，升级为轻量级锁，会按照轻量级锁的⽅式进⾏竞争锁。</li>
+</ul>
+<h3 id="3-撤销偏向锁"><a href="#3-撤销偏向锁" class="headerlink" title="3.撤销偏向锁"></a>3.撤销偏向锁</h3><ol>
+<li><p>偏向锁使⽤了⼀种等到竞争出现才释放锁的机制，所以当其他线程尝试竞争偏向锁 时， 持有偏向锁的线程才会释放锁。</p>
+</li>
+<li><p>偏向锁升级成轻量级锁时，会暂停拥有偏向锁的线程，重置偏向锁标识，这个过程看起来容易，实则开销还是很⼤的，⼤概的过程如下:</p>
+<ol>
+<li> 在⼀个安全点（在这个时间点上没有字节码正在执⾏）停⽌拥有锁的线程。 </li>
+<li> 遍历线程栈，如果存在锁记录的话，需要修复锁记录和Mark Word，使其变成 ⽆锁状态</li>
+<li> 唤醒被停⽌的线程，将当前锁升级成轻量级锁</li>
+</ol>
+</li>
+<li><p>所以，如果应⽤程序⾥所有的锁通常出于竞争状态，那么偏向锁就会是⼀种累赘，对于这种情况，我们可以⼀开始就把偏向锁这个默认功能给关闭：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">-XX:UseBiasedLocking=<span class="keyword">false</span>。</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<h2 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h2><h3 id="1-概述及原理："><a href="#1-概述及原理：" class="headerlink" title="1.概述及原理："></a>1.概述及原理：</h3><p>JVM会为每个线程在当前线程的栈帧中创建⽤于存储锁记录的空间，我们称为Displaced Mark Word。如果⼀个线程获得锁的时候发现是轻量级锁，会把锁的Mark Word复制到⾃⼰的Displaced Mark Word⾥⾯。 然后线程尝试⽤CAS将锁的Mark Word替换为指向锁记录的指针。如果成功，当前 线程获得锁，如果失败，表示Mark Word已经被替换成了其他线程的锁记录，说明 在与其它线程竞争锁，当前线程就尝试使⽤⾃旋来获取锁。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">⾃旋：不断尝试去获取锁，⼀般⽤循环来实现。</span><br></pre></td></tr></table></figure>
+
+<p>⾃旋是需要消耗CPU的，如果⼀直获取不到锁的话，那该线程就⼀直处在⾃旋状 态，⽩⽩浪费CPU资源。解决这个问题最简单的办法就是指定⾃旋的次数，例如让 其循环10次，如果还没获取到锁就进⼊阻塞状态。 但是JDK采⽤了更聪明的⽅式——适应性⾃旋，简单来说就是线程如果⾃旋成功 了，则下次⾃旋的次数会更多，如果⾃旋失败了，则⾃旋的次数就会减少。 ⾃旋也不是⼀直进⾏下去的，如果⾃旋到⼀定程度（和JVM、操作系统相关），依然没有获取到锁，称为⾃旋失败，那么这个线程会阻塞。同时这个锁就会升级成重 量级锁。 </p>
+<h3 id="2-轻量级锁的释放"><a href="#2-轻量级锁的释放" class="headerlink" title="2.轻量级锁的释放"></a>2.轻量级锁的释放</h3><p>在释放锁时，当前线程会使⽤CAS操作将Displaced Mark Word的内容复制回锁的Mark Word⾥⾯。如果没有发⽣竞争，那么这个复制的操作会成功。如果有其他线 程因为⾃旋多次导致轻量级锁升级成了重量级锁，那么CAS操作会失败，此时会释 放锁并唤醒被阻塞的线程。</p>
+<h2 id="重量级锁"><a href="#重量级锁" class="headerlink" title="重量级锁"></a>重量级锁</h2><p>重量级锁依赖于操作系统的互斥量（mutex） 实现的，⽽操作系统中线程间状态的 转换需要相对⽐较⻓的时间，所以重量级锁效率很低，但被阻塞的线程不会消耗CPU。 前⾯说到，每⼀个对象都可以当做⼀个锁，当多个线程同时请求某个对象锁时，对 象锁会设置⼏种状态⽤来区分请求的线程：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Contention List：所有请求锁的线程将被⾸先放置到该竞争队列</span><br><span class="line">Entry List：Contention List中那些有资格成为候选⼈的线程被移到Entry List</span><br><span class="line">Wait Set：那些调⽤wait⽅法被阻塞的线程被放置到Wait Set</span><br><span class="line">OnDeck：任何时刻最多只能有⼀个线程正在竞争锁，该线程称为OnDeck</span><br><span class="line">Owner：获得锁的线程称为Owner</span><br><span class="line">!Owner：释放锁的线程</span><br></pre></td></tr></table></figure>
+
+<p>​    当⼀个线程尝试获得锁时，如果该锁已经被占⽤，则会将该线程封装成⼀ 个 ObjectWaiter 对象插⼊到Contention List的队列的队⾸，然后调⽤ park 函数挂 起当前线程。 当线程释放锁时，会从Contention List或EntryList中挑选⼀个线程唤醒，被选中的 线程叫做 Heir presumptive 即假定继承⼈，假定继承⼈被唤醒后会尝试获得锁， 但 synchronized 是⾮公平的，所以假定继承⼈不⼀定能获得锁。这是因为对于重 量级锁，线程先⾃旋尝试获得锁，这样做的⽬的是为了减少执⾏操作系统同步操作 带来的开销。如果⾃旋不成功再进⼊等待队列。这对那些已经在等待队列中的线程 来说，稍微显得不公平，还有⼀个不公平的地⽅是⾃旋线程可能会抢占了Ready线 程的锁。 果线程获得锁后调⽤ Object.wait ⽅法，则会将线程加⼊到WaitSet中，当 被 Object.notify 唤醒后，会将线程从WaitSet移动到Contention List或EntryList中 去。需要注意的是，当调⽤⼀个锁对象的 wait 或 notify ⽅法时，如当前锁的状 态是偏向锁或轻量级锁则会先膨胀成重量级锁</p>
+<h1 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h1><p>每⼀个线程在准备获取共享资源时：</p>
+<p> 第⼀步，检查MarkWord⾥⾯是不是放的⾃⼰ 的ThreadId ,如果是，表示当前线程是处于 “偏向锁” 。 </p>
+<p>第⼆步，如果MarkWord不是⾃⼰的ThreadId，锁升级，这时候，⽤CAS来执⾏切 换，新的线程根据MarkWord⾥⾯现有的ThreadId，通知之前线程暂停，之前线程 将Markword的内容置为空。 </p>
+<p>第三步，两个线程都把锁对象的HashCode复制到⾃⼰新建的⽤于存储锁的记录空 间，接着开始通过CAS操作， 把锁对象的MarKword的内容修改为⾃⼰新建的记录 空间的地址的⽅式竞争MarkWord。 </p>
+<p>第四步，第三步中成功执⾏CAS的获得资源，失败的则进⼊⾃旋 。 </p>
+<p>第五步，⾃旋的线程在⾃旋过程中，成功获得资源(即之前获的资源的线程执⾏完 成并释放了共享资源)，则整个状态依然处于 轻量级锁的状态，如果⾃旋失败 。 </p>
+<p>第六步，进⼊重量级锁的状态，这个时候，⾃旋的线程进⾏阻塞，等待之前线程执 ⾏完成并唤醒⾃⼰。</p>
+<h1 id="各种锁的优缺点对比"><a href="#各种锁的优缺点对比" class="headerlink" title="各种锁的优缺点对比"></a>各种锁的优缺点对比</h1><table>
+<thead>
+<tr>
+<th>锁</th>
+<th>优点</th>
+<th>缺点</th>
+<th>使用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>偏向锁</td>
+<td>加锁和解锁不需要额外的消耗，<br />和执行非同步方法仅存在纳秒级的差距</td>
+<td>如果线程间存在锁竞争，<br />会带来额外的锁撤销消耗</td>
+<td>适用于只有一个线程访问同步代码块常见</td>
+</tr>
+<tr>
+<td>轻量级锁</td>
+<td>竞争的线程不会阻塞，提高了程序的响应速度</td>
+<td>如果始终的不到锁竞争的线程使用自旋会消耗CPU</td>
+<td>追求响应时间，同步代码块执行速度非常快</td>
+</tr>
+<tr>
+<td>重量级锁</td>
+<td>线程竞争不使用自旋，不会消耗CPU</td>
+<td>线程阻塞，响应时间缓慢</td>
+<td>追求吞吐量，同步代码块执行速度较长</td>
+</tr>
+</tbody></table>
+</article><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/09/15/%E6%B5%85%E6%9E%90JVM%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">浅析JVM类加载过程</div></div></a></div><div class="next-post pull-right"><a href="/2020/09/12/%E6%B5%85%E6%9E%90JVM%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E5%8D%B3%E5%8F%AF%E5%8F%91%E7%94%9F%E5%BC%82%E5%B8%B8/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">浅析JVM内存区域及可发生异常</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Alan_</div><div class="author-info__description">Code Change The Word</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">25</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Alan-Joker" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:tony_xb@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=1623249948&amp;site=qq&amp;menu=yes" target="_blank" title="QQ"><i class="fab fa-qq"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Synchronized"><span class="toc-number">1.</span> <span class="toc-text">Synchronized</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%94%81"><span class="toc-number">2.</span> <span class="toc-text">锁</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E5%AF%B9%E8%B1%A1%E5%A4%B4"><span class="toc-number">2.1.</span> <span class="toc-text">Java对象头</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%81%8F%E5%90%91%E9%94%81"><span class="toc-number">2.2.</span> <span class="toc-text">偏向锁</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%A6%82%E8%BF%B0%EF%BC%9A"><span class="toc-number">2.2.1.</span> <span class="toc-text">1.概述：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">2.2.2.</span> <span class="toc-text">2.实现原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%92%A4%E9%94%80%E5%81%8F%E5%90%91%E9%94%81"><span class="toc-number">2.2.3.</span> <span class="toc-text">3.撤销偏向锁</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81"><span class="toc-number">2.3.</span> <span class="toc-text">轻量级锁</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%8E%9F%E7%90%86%EF%BC%9A"><span class="toc-number">2.3.1.</span> <span class="toc-text">1.概述及原理：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81%E7%9A%84%E9%87%8A%E6%94%BE"><span class="toc-number">2.3.2.</span> <span class="toc-text">2.轻量级锁的释放</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E9%87%8F%E7%BA%A7%E9%94%81"><span class="toc-number">2.4.</span> <span class="toc-text">重量级锁</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">总结：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%84%E7%A7%8D%E9%94%81%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9%E5%AF%B9%E6%AF%94"><span class="toc-number">4.</span> <span class="toc-text">各种锁的优缺点对比</span></a></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2020/11/10/%E9%94%81%E5%8D%87%E7%BA%A7%E4%B8%8E%E5%AF%B9%E6%AF%94/" title="锁升级与对比"><img src="/pic/%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="锁升级与对比"/></a><div class="content"><a class="title" href="/2020/11/10/%E9%94%81%E5%8D%87%E7%BA%A7%E4%B8%8E%E5%AF%B9%E6%AF%94/" title="锁升级与对比">锁升级与对比</a><time datetime="2020-11-10T14:07:44.000Z" title="发表于 2020-11-10 22:07:44">2020-11-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/11/10/AQS%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/" title="AQS源码解读"><img src="https://img-blog.csdnimg.cn/20201024103405147.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1RaODQ1MTk1NDg1,size_16,color_FFFFFF,t_70#pic_center" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AQS源码解读"/></a><div class="content"><a class="title" href="/2020/11/10/AQS%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/" title="AQS源码解读">AQS源码解读</a><time datetime="2020-11-10T13:31:06.000Z" title="发表于 2020-11-10 21:31:06">2020-11-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/10/16/Java%E5%90%8E%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0-Java%E8%99%9A%E6%8B%9F%E6%9C%BA/" title="Java后端基础复习---Java虚拟机"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Java后端基础复习---Java虚拟机"/></a><div class="content"><a class="title" href="/2020/10/16/Java%E5%90%8E%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0-Java%E8%99%9A%E6%8B%9F%E6%9C%BA/" title="Java后端基础复习---Java虚拟机">Java后端基础复习---Java虚拟机</a><time datetime="2020-10-16T08:14:15.000Z" title="发表于 2020-10-16 16:14:15">2020-10-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/10/14/Java%E5%90%8E%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0-Java%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/" title="Java后端基础复习---Java语言基础"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Java后端基础复习---Java语言基础"/></a><div class="content"><a class="title" href="/2020/10/14/Java%E5%90%8E%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0-Java%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/" title="Java后端基础复习---Java语言基础">Java后端基础复习---Java语言基础</a><time datetime="2020-10-14T09:28:19.000Z" title="发表于 2020-10-14 17:28:19">2020-10-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/10/07/JVM%E9%98%B6%E6%AE%B5%E6%80%A7%E6%80%BB%E7%BB%93/" title="JVM阶段性总结"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JVM阶段性总结"/></a><div class="content"><a class="title" href="/2020/10/07/JVM%E9%98%B6%E6%AE%B5%E6%80%A7%E6%80%BB%E7%BB%93/" title="JVM阶段性总结">JVM阶段性总结</a><time datetime="2020-10-07T12:07:44.000Z" title="发表于 2020-10-07 20:07:44">2020-10-07</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By Alan_</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="true"></script></div></body></html>

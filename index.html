@@ -1,0 +1,402 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Alan_ - Code Change The Word</title><meta name="keywords" content="Code Change The Word"><meta name="author" content="Alan_"><meta name="copyright" content="Alan_"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="Code Change The Word">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Alan_">
+<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:site_name" content="Alan_">
+<meta property="og:description" content="Code Change The Word">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/head.jpg">
+<meta property="article:author" content="Alan_">
+<meta property="article:tag" content="Code Change The Word">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/head.jpg"><link rel="shortcut icon" href="/img/head.jpg"><link rel="canonical" href="http://example.com/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css"><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: '',
+  enable_page_level_ads: 'true'
+});</script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"top-center"},
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2020-11-11 21:34:44'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/head.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">25</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div id="body-wrap"><header class="full_page" id="page-header" style="background-image: url(/img/1.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Alan_</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="site-info"><h1 id="site-title">Alan_</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="https://github.com/Alan-Joker" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:tony_xb@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=1623249948&amp;site=qq&amp;menu=yes" target="_blank" title="QQ"><i class="fab fa-qq"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2020/11/10/%E9%94%81%E5%8D%87%E7%BA%A7%E4%B8%8E%E5%AF%B9%E6%AF%94/" title="锁升级与对比">     <img class="post_bg" src="/pic/%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="锁升级与对比"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/11/10/%E9%94%81%E5%8D%87%E7%BA%A7%E4%B8%8E%E5%AF%B9%E6%AF%94/" title="锁升级与对比">锁升级与对比</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-11-10T14:07:44.000Z" title="发表于 2020-11-10 22:07:44">2020-11-10</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">并发编程</a></span></div><div class="content">概述​    为了减少获得锁和释放锁带来的性能消耗，Java引入了“偏向锁”和“轻量级锁”的概念，锁一共有4种状态，级别从低到高依次是：无锁状态，偏向锁状态，轻量级锁状态，重量级锁状态，这几个锁会随着竞争情况逐渐升级。虽然锁可以升级，但却不能降级，意味着偏向锁升级为轻量级锁后不能降级为偏向锁。目的是为了提高获得锁和释放锁的效率。
+偏向锁​    在大多数情况下，锁不仅不存在多线程竞争，而且总是由同一线程多次获得，为了让线程获得锁的代价更低而引入了偏向锁，当一个线程访问同步代码块并获取锁时，会在对象头和栈帧中的锁记录里存储锁偏向的线程ID，以后该线程在进入和退出同步块时不需要进行CAS操作来加锁或解锁
+偏向锁的撤销​    偏向锁使用了一种等到竞争出现才释放锁的机制，所以当其他线程尝试竞争偏向锁时，持有偏向锁的线程才会释放锁。偏向锁的撤销需要等待全局安全点。首先他会暂停所拥有的偏向锁的线程，然后检查持有偏向锁的线程是否活着，如果线程不不处于活动状态，则将对象头设置为无锁状态；如果线程仍然存活，持有偏向锁的栈会被遍历偏向对象的锁记录，栈中的锁记录和对象头的Mark Word要么重新偏向于其 ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2020/11/10/AQS%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/" title="AQS源码解读">     <img class="post_bg" src="https://img-blog.csdnimg.cn/20201024103405147.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1RaODQ1MTk1NDg1,size_16,color_FFFFFF,t_70#pic_center" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AQS源码解读"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/11/10/AQS%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/" title="AQS源码解读">AQS源码解读</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-11-10T13:31:06.000Z" title="发表于 2020-11-10 21:31:06">2020-11-10</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/">源码解读</a></span></div><div class="content">Hello EveryOne，This is Alan_。首先祝各位程序小猿们节日快乐。为聊表心意，为大家献上一份Lock锁底层AQS实现源码解读，希望大家可以走进源码，笑看其中。
+一.基础简述，前情提要如果想直接看思维导图直接点下面连接
+AQS脑图
+1.问题的产生 
+请大家回想一下我们的等待唤醒机制，一共有三种方式。
+
+使用Object中的wait()方法让线程等待,使用Object中的notify方法唤醒线程
+使用JUC包中Condition的await()方法让线程等待,使用signal()方法唤醒线程
+LockSupport类可以阻塞当前线程以及唤醒指定被阻塞的线程
+
+无论是wait()/notify的组合还是await/signal的组合，都无法有效的避免一个问题，那就是，这两种组合必须在同步方法或者同步块中使用，不然会抛出java.lang.IllegalMonitorStateException异常，此外，必须先等待，在唤醒，否则将会造成线程阻塞一直等待。
+因此LockSupport就应然而生了
+
+unpark():如果当前线程不可用，则提供一个凭证，恢复线程
+park( ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2020/10/16/Java%E5%90%8E%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0-Java%E8%99%9A%E6%8B%9F%E6%9C%BA/" title="Java后端基础复习---Java虚拟机">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Java后端基础复习---Java虚拟机"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/10/16/Java%E5%90%8E%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0-Java%E8%99%9A%E6%8B%9F%E6%9C%BA/" title="Java后端基础复习---Java虚拟机">Java后端基础复习---Java虚拟机</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-10-16T08:14:15.000Z" title="发表于 2020-10-16 16:14:15">2020-10-16</time></span></div><div class="content">一.Java运行时数据区域
+
+1.1 线程私有的数据区域1.1.1 程序计数器
+一块较小的内存空间，是当前线程所执行的字节码行号指示器。
+多线程实际上是通过线程之间的轮流切换，由系统按优先级分配时间片来实现的，时间片用完，线程就会被挂起，即任一确定时间，一个处理器内核只会执行一条线程中的指令，但是CPU上下文切换很快，不易察觉
+程序计数器是Java虚拟机中唯一一块不会发生OOM异常的区域
+
+1.1.2 Java虚拟机栈
+描述Java方法执行的内存模型,每个方法在执行的同时都会创建一个栈帧用于存储局部变量表，操作数栈,动态链接,方法返回地址
+
+活动线程中，只有栈顶的栈帧才有效，被称为当前栈帧
+
+
+
+局部变量表
+
+存放方法参数和局部变量，必需显示初始化
+如果是非静态方法，在index[0]的位置上存储方法所属对象的实例引用,后面存储参数和局部变量
+字节码指令中的STORE指令:将操作数栈中计算完成的局部变量写回到局部变量表。
+会产生两种错误
+StackOverflowError：线程请求栈深度大于虚拟机允许的深度
+OutOfMemoryError：若虚拟机可动态扩展，扩展时无法申请到足够内 ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2020/10/14/Java%E5%90%8E%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0-Java%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/" title="Java后端基础复习---Java语言基础">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Java后端基础复习---Java语言基础"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/10/14/Java%E5%90%8E%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0-Java%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/" title="Java后端基础复习---Java语言基础">Java后端基础复习---Java语言基础</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-10-14T09:28:19.000Z" title="发表于 2020-10-14 17:28:19">2020-10-14</time></span></div><div class="content">一. Java语言基础
+
+1.1.面向对象的三大特征？1.1.1 封装
+将描述实体的数据和基于这些实体数据的操作集合到一起，形成一个封装体、
+
+封装的思想保证了类内部数据结构的完整性，使用户无法轻易直接操作类的内部数据，降低了对内部数据的影响，提高了程序的安全性和可维护性。
+
+
+
+封装的好处？
+
+
+只能通过规定的方法访问数据
+隐藏类的实现细节
+方便修改
+
+
+this关键字 ?
+
+
+this 指代当前对象
+this 调用本类中的构造方法，调用时要放在构造方法的首行，因此 this 和 super只可出现其一。
+this 关键字不可再static代码块中使用，因为静态代码块初始化时，对象还未创建完成。
+
+1.1.2 继承
+继承使得类变得具有层次化
+继承就是子类继承父类得特征和行为，使得子类对象具有父类的得属性和方法，或从父类继承方法，使得子类与父类具有相同得行为
+
+
+Java中继承得特点：
+
+
+Java中的类时单继承多实现的，也就是说一个子类只能继承一个父类，但却可以同时实现多个接口，一个接口可以继承多个接口
+父类的构造方法不可被继承，但可以被重写
+父类中被private修饰的属性，方法不 ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2020/10/07/JVM%E9%98%B6%E6%AE%B5%E6%80%A7%E6%80%BB%E7%BB%93/" title="JVM阶段性总结">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JVM阶段性总结"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/10/07/JVM%E9%98%B6%E6%AE%B5%E6%80%A7%E6%80%BB%E7%BB%93/" title="JVM阶段性总结">JVM阶段性总结</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-10-07T12:07:44.000Z" title="发表于 2020-10-07 20:07:44">2020-10-07</time></span></div><div class="content">一.GC
+
+1.什么是垃圾？简单来说就是在内存中不再被使用的空间。
+2.如何确定垃圾1.引用计数法在Java中，引用与对象之间是有关联关系的，如果想要操作对象必须通过引用进行，因此我们可以通过判断引用的数量来判断对象是否可以被回收，给引用添加一个计数器，如果他关联一个对象便+1，相反，如果有一个对象是小，则计数器-1
+当引用计数器的值为0时这个对象便不再使用，即可回收对象。该算法虽然简便，但会产用循环引用的问题
+2.可达性分析法为了解决循环引用的问题，提出了该解决方案。基本思路就是通过GC ROOT对象开始向下搜索，如果一个对象到GC ROOT 没有任何引用链相连，则说明对象不可达，类似于DFS
+
+那些对象可以做GC ROOT对象
+
+
+虚拟机栈中(局部变量表)中引用的对象
+方法区中静态属性与常量所引用的对象
+本地方法栈中JNI的引用对象
+
+二.JVM参数类型1.标配参数
+-version
+-help
+
+2.X参数
+-Xint：解释执行
+-Xcomp：第一次使用就编译成本地代码
+-Xmixed：混合模式
+
+3.XX参数
+Boolean类型：
+公式: -XX：+某个或者-某个属性 *+表示 ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2020/09/21/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/" title="设计模式---简单工厂模式">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="设计模式---简单工厂模式"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/09/21/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/" title="设计模式---简单工厂模式">设计模式---简单工厂模式</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-09-21T12:31:29.000Z" title="发表于 2020-09-21 20:31:29">2020-09-21</time></span></div><div class="content">简单工厂模式
+
+一. OO思想封装，继承，多态。
+二.简单工厂模式思想继承于OO思想，对程序更加要求可维护，可扩展，可复用，灵活性好。
+将重复使用的代码进行封装，提高数据的安全性，并提高复用性。
+通过继承与多态，实现程序间的低耦合与可扩展性。
+顾名思义，工厂就是生产物品的地方，在程序语言中，我们需要什么类型的对象就可以通过这个工厂生产这个类型的对象
+代码实现：
+
+Animal接口
+
+package EasyFactory;public interface Animal &#123;      void eat();&#125;
+
+
+Cat 类
+
+package EasyFactory;public class Cat implements Animal &#123;    @Override    public void eat() &#123;        System.out.println(&quot;猫吃鱼&quot;);    &#125;&#125;
+
+
+Dog类
+
+package EasyFactory;public class Dog implements Anima ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2020/09/20/Elasticsearch%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/" title="Elasticsearch基础总结">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Elasticsearch基础总结"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/09/20/Elasticsearch%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/" title="Elasticsearch基础总结">Elasticsearch基础总结</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-09-20T10:45:45.000Z" title="发表于 2020-09-20 18:45:45">2020-09-20</time></span></div><div class="content">一.基本概念
+
+Elasticsearch是基于Lucene的全文检索库，本质也是存储数据，与MySQL在概念上类似
+对比关系：
+
+
+
+Elasticsearch
+MySQL
+
+
+
+索引(indices)
+Databases 数据库
+
+
+类型(type)
+table 数据表
+
+
+文档(Document)
+Row 行
+
+
+字段(Field)
+columns 列
+
+
+
+索引集：逻辑上的完整索引
+分片：数据拆分后的各个部分
+副本：每个分片的赋值
+
+注意：Elasticsearch本身就是分布式的，因此即便你只有一个节点，Elasticsearch默认也会对数据进行分片和副本操作，当向集群添加新数据时，数据也会在新加入的节点中进行平衡
+二操作索引1.创建索引1.语法Elasticsearch采用Rest风格API，因此其API就是一次http请求，你可以使用任何工具发起http请求
+创建索引的请求格式：
+
+请求方式：PUT
+
+请求路径：/索引库名
+
+请求参数：json格式
+&#123;    &quot;settings&quot;: &#123;        &quot;number_of ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2020/09/20/JUC%E9%98%B6%E6%AE%B5%E6%80%A7%E6%80%BB%E7%BB%93-%E4%B8%80-voliate%E4%B8%8EAtomic%E5%8E%9F%E5%AD%90%E7%B1%BB/" title="无题">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/09/20/JUC%E9%98%B6%E6%AE%B5%E6%80%A7%E6%80%BB%E7%BB%93-%E4%B8%80-voliate%E4%B8%8EAtomic%E5%8E%9F%E5%AD%90%E7%B1%BB/" title="无题">无题</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-09-19T22:52:14.000Z" title="发表于 2020-09-20 06:52:14">2020-09-20</time></span></div><div class="content">前言：
+
+JUC编程基础性阶段总结第一篇：关于JMM内存模型，volatile底层原理，原子类得底层原理，与源码解读。
+JUC(java.util.concurrent)
+
+进程和线程
+进程：后台运行得程序(一个打开的软件，就是进程)
+线程；轻量级的进程，一个进程包含多个线程(一个软件内，同时运行的模块，就是线程)
+
+
+并发和并行
+并发：同时访问某个东西，就是并发
+并行：一起做某些事情，就是并行
+
+
+
+一.JMMJMM时Java内存模型，是一种抽象得概念，实际上并不存在，实际上他描述得是一种规范，定义了程序中各个变量(包括实例字段，静态字段和构成数组对象得元素)得访问方式
+1. JMM关于同步得规定
+线程解锁前，必须把共享变量得值刷新回主内存
+线程解锁前，必须读取主内存得最新值，到自己得工作内存
+加锁和解锁是同一把锁
+
+解释：由于JVM运行程序得实体是线程，而每个线程创建时JVM都会为其创建一个工作内存,每个内存是线程私有的数据区域，而Java内存模型中规定所有的变量都存储在主内存，主内存是内存共享得内存区域，所有线程都可访问，但线程对变量的操作(读取赋值)必须在自己的工作内存中进行， ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2020/09/18/%E6%B5%85%E6%9E%90SpringBoot%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86/" title="浅析SpringBoot自动配置原理">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="浅析SpringBoot自动配置原理"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/09/18/%E6%B5%85%E6%9E%90SpringBoot%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86/" title="浅析SpringBoot自动配置原理">浅析SpringBoot自动配置原理</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-09-17T21:39:59.000Z" title="发表于 2020-09-18 05:39:59">2020-09-18</time></span></div><div class="content">SpringBoot为什么不用配置?
+
+1.pom.xml
+父依赖
+
+&lt;parent&gt;    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;    &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;    &lt;version&gt;2.2.5.RELEASE&lt;/version&gt;    &lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;&lt;/parent&gt;
+
+进入这个父依赖，还有一个父依赖
+&lt;parent&gt;    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;    &lt;artifactId&gt;spring-boot-dependencies&lt;/artifactId&gt;    &lt;version&gt;2.2.5.RELEASE&lt; ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2020/09/15/Redis%E9%98%B6%E6%AE%B5%E6%80%A7%E6%80%BB%E7%BB%93/" title="Redis阶段性总结">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Redis阶段性总结"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/09/15/Redis%E9%98%B6%E6%AE%B5%E6%80%A7%E6%80%BB%E7%BB%93/" title="Redis阶段性总结">Redis阶段性总结</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-09-15T01:23:47.000Z" title="发表于 2020-09-15 09:23:47">2020-09-15</time></span></div><div class="content">一.基本通用指令
+
+keys * : 查看当前数据库中所有的key
+flushdb: 清空当前数据库中的键值对
+flushall: 清空所有数据库的键值对
+
+Redis是单线程的，Redis是基于内存操作得。
+
+因此Redis的性能瓶颈不是CPU而是机器内存和网络宽带
+
+Redis为什么单线程还这么块
+
+Redis是将所有的数据放在内存中的，所以说使用单线程去操作效率是最高的，多线程(CPU上下文切换:耗时的操作),对于内存系统来说，如果没有上下文切换，效率是最高的，多次读写都是在一个CPU上的，在内存存储数据情况下，单线程就是最佳的方案。
+二.五大基本数据类型1. 基本通用指令exists key: 判断键是否存在
+del key: 删除键值对
+move key db：将键值对移动到指定数据库
+expire key second：设置键值对的过期时间
+type key：查看value的数据类型
+TTL key：查看key的过期时间
+2.String
+
+
+命令
+描述
+
+
+
+append key value
+向指定的key的value后增加字符串
+
+
+decr/incr key
+将指定k ...</div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Alan_</div><div class="author-info__description">Code Change The Word</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">25</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Alan-Joker" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:tony_xb@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=1623249948&amp;site=qq&amp;menu=yes" target="_blank" title="QQ"><i class="fab fa-qq"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2020/11/10/%E9%94%81%E5%8D%87%E7%BA%A7%E4%B8%8E%E5%AF%B9%E6%AF%94/" title="锁升级与对比"><img src="/pic/%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="锁升级与对比"/></a><div class="content"><a class="title" href="/2020/11/10/%E9%94%81%E5%8D%87%E7%BA%A7%E4%B8%8E%E5%AF%B9%E6%AF%94/" title="锁升级与对比">锁升级与对比</a><time datetime="2020-11-10T14:07:44.000Z" title="发表于 2020-11-10 22:07:44">2020-11-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/11/10/AQS%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/" title="AQS源码解读"><img src="https://img-blog.csdnimg.cn/20201024103405147.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1RaODQ1MTk1NDg1,size_16,color_FFFFFF,t_70#pic_center" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AQS源码解读"/></a><div class="content"><a class="title" href="/2020/11/10/AQS%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/" title="AQS源码解读">AQS源码解读</a><time datetime="2020-11-10T13:31:06.000Z" title="发表于 2020-11-10 21:31:06">2020-11-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/10/16/Java%E5%90%8E%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0-Java%E8%99%9A%E6%8B%9F%E6%9C%BA/" title="Java后端基础复习---Java虚拟机"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Java后端基础复习---Java虚拟机"/></a><div class="content"><a class="title" href="/2020/10/16/Java%E5%90%8E%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0-Java%E8%99%9A%E6%8B%9F%E6%9C%BA/" title="Java后端基础复习---Java虚拟机">Java后端基础复习---Java虚拟机</a><time datetime="2020-10-16T08:14:15.000Z" title="发表于 2020-10-16 16:14:15">2020-10-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/10/14/Java%E5%90%8E%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0-Java%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/" title="Java后端基础复习---Java语言基础"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Java后端基础复习---Java语言基础"/></a><div class="content"><a class="title" href="/2020/10/14/Java%E5%90%8E%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0-Java%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/" title="Java后端基础复习---Java语言基础">Java后端基础复习---Java语言基础</a><time datetime="2020-10-14T09:28:19.000Z" title="发表于 2020-10-14 17:28:19">2020-10-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/10/07/JVM%E9%98%B6%E6%AE%B5%E6%80%A7%E6%80%BB%E7%BB%93/" title="JVM阶段性总结"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JVM阶段性总结"/></a><div class="content"><a class="title" href="/2020/10/07/JVM%E9%98%B6%E6%AE%B5%E6%80%A7%E6%80%BB%E7%BB%93/" title="JVM阶段性总结">JVM阶段性总结</a><time datetime="2020-10-07T12:07:44.000Z" title="发表于 2020-10-07 20:07:44">2020-10-07</time></div></div></div></div></div><div class="card-widget card-categories"><div class="card-content"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div><ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"><span class="card-category-list-name">并发编程</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/"><span class="card-category-list-name">源码解读</span><span class="card-category-list-count">1</span></a></li>
+            
+            </ul></div></div><div class="card-widget card-tags"><div class="card-content"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/Java/" style="font-size: 1.5em; color: #99a9bf">Java</a> <a href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" style="font-size: 1.1em; color: #999">并发编程</a></div></div></div><div class="card-widget card-archives"><div class="card-content"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/11/"><span class="card-archive-list-date">十一月 2020</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/10/"><span class="card-archive-list-date">十月 2020</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/09/"><span class="card-archive-list-date">九月 2020</span><span class="card-archive-list-count">11</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/07/"><span class="card-archive-list-date">七月 2020</span><span class="card-archive-list-count">8</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/06/"><span class="card-archive-list-date">六月 2020</span><span class="card-archive-list-count">1</span></a></li></ul></div></div><div class="card-widget card-webinfo"><div class="card-content"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">25</div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">54.1k</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2020-11-11T13:34:44.506Z"></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By Alan_</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>function subtitleType () {
+  if (true) { 
+    var typed = new Typed("#subtitle", {
+      strings: "只有那些疯狂到想改变世界的人，才能真正的改变世界！".split(","),
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50
+    })
+  } else {
+    document.getElementById("subtitle").innerHTML = '只'
+  }
+}
+
+if (true) {
+  if (typeof Typed === 'function') subtitleType()
+  else $.getScript('https://cdn.jsdelivr.net/npm/typed.js/lib/typed.min.js', subtitleType)
+} else {
+  subtitleType()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="true"></script></div></body></html>
