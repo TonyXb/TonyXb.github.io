@@ -1,0 +1,269 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Spring框架总结 | Alan_</title><meta name="keywords" content="Java"><meta name="author" content="Alan_"><meta name="copyright" content="Alan_"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="概述Sping核心组件 Spring常用模块 Spring主要jar包 Spring常用注解 Spring IOC原理概念Spring  Ioc指的是控制反转，IOC容器负责实例化，定位，配置应用程序中的对象及建立这些对象之间的依赖。交由Spring容器统一进行管理，从而实现低耦合。Spring通过一个配置文件描述Bean与Bean之间的依赖关系，利用Java的反射机制实例化Bean并建立Bea">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring框架总结">
+<meta property="og:url" content="http://example.com/2020/11/14/Spring%E6%A1%86%E6%9E%B6%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="Alan_">
+<meta property="og:description" content="概述Sping核心组件 Spring常用模块 Spring主要jar包 Spring常用注解 Spring IOC原理概念Spring  Ioc指的是控制反转，IOC容器负责实例化，定位，配置应用程序中的对象及建立这些对象之间的依赖。交由Spring容器统一进行管理，从而实现低耦合。Spring通过一个配置文件描述Bean与Bean之间的依赖关系，利用Java的反射机制实例化Bean并建立Bea">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/pic/Spring%E7%89%B9%E5%BE%81.png">
+<meta property="article:published_time" content="2020-11-14T03:03:17.000Z">
+<meta property="article:modified_time" content="2020-11-14T13:19:12.806Z">
+<meta property="article:author" content="Alan_">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/pic/Spring%E7%89%B9%E5%BE%81.png"><link rel="shortcut icon" href="/img/head.jpg"><link rel="canonical" href="http://example.com/2020/11/14/Spring%E6%A1%86%E6%9E%B6%E6%80%BB%E7%BB%93/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css"><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: '',
+  enable_page_level_ads: 'true'
+});</script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"top-center"},
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-11-14 21:19:12'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/head.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/pic/Spring%E7%89%B9%E5%BE%81.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Alan_</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">Spring框架总结</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-11-14T03:03:17.000Z" title="发表于 2020-11-14 11:03:17">2020-11-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-14T13:19:12.806Z" title="更新于 2020-11-14 21:19:12">2020-11-14</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Spring%E6%A1%86%E6%9E%B6/">Spring框架</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><img src="/pic/Spring%E7%89%B9%E5%BE%81.png" alt="image-20201114110356841"></p>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><h2 id="Sping核心组件"><a href="#Sping核心组件" class="headerlink" title="Sping核心组件"></a>Sping核心组件</h2><p><img src="/pic/Spring%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6.png" alt="image-20201114111210885"></p>
+<h2 id="Spring常用模块"><a href="#Spring常用模块" class="headerlink" title="Spring常用模块"></a>Spring常用模块</h2><p><img src="/pic/Spring%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9D%97.png" alt="image-20201114111316896"></p>
+<h2 id="Spring主要jar包"><a href="#Spring主要jar包" class="headerlink" title="Spring主要jar包"></a>Spring主要jar包</h2><p><img src="/pic/Spring%E4%B8%BB%E8%A6%81jar%E5%8C%85.png" alt="image-20201114111427106"></p>
+<h2 id="Spring常用注解"><a href="#Spring常用注解" class="headerlink" title="Spring常用注解"></a>Spring常用注解</h2><p><img src="/pic/Spring%E5%B8%B8%E7%94%A8%E6%B3%A8%E8%A7%A3.png" alt="image-20201114111532906"></p>
+<h1 id="Spring-IOC原理"><a href="#Spring-IOC原理" class="headerlink" title="Spring IOC原理"></a>Spring IOC原理</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>Spring  Ioc指的是控制反转，IOC容器负责实例化，定位，配置应用程序中的对象及建立这些对象之间的依赖。交由Spring容器统一进行管理，从而实现低耦合。Spring通过一个配置文件描述Bean与Bean之间的依赖关系，利用Java的反射机制实例化Bean并建立Bean之间的依赖关系。 Spring 的 IoC 容器在完成这些底层工作的基础上，还提供了 Bean 实例缓存、生命周期管理、 Bean 实例代理、事件发布、资源装载等高级服务。</p>
+<h2 id="Ioc容器实现"><a href="#Ioc容器实现" class="headerlink" title="Ioc容器实现"></a>Ioc容器实现</h2><p>在Java开发中，Ioc意味着将你设计好的对象交给容器控制，而不是传统的在你的对象内部直接控制。如何理解好Ioc呢？理解好Ioc的关键是要明确“谁控制谁，控制什么，为何是反转（有反转就应该有正转了），哪些方面反转了”，那我们来深入分析一下：</p>
+<p>●谁控制谁，控制什么：传统Java SE程序设计，我们直接在对象内部通过new进行创建对象，是程序主动去创建依赖对象；而IoC是有专门一个容器来创建这些对象，即由Ioc容器来控制对 象的创建；谁控制谁？当然是IoC 容器控制了对象；控制什么？那就是主要控制了外部资源获取（不只是对象包括比如文件等）。</p>
+<p>●为何是反转，哪些方面反转了：有反转就有正转，传统应用程序是由我们自己在对象中主动控制去直接获取依赖对象，也就是正转；而反转则是由容器来帮忙创建及注入依赖对象；为何是反转？因为由容器帮我们查找及注入依赖对象，对象只是被动的接受依赖对象，所以是反转；哪些方面反转了？依赖对象的获取被反转了。</p>
+<p><img src="https://img-blog.csdnimg.cn/20190420155455877.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3poYW5nY29uZ3lpNDIw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>从示意图可以看出，当web容器启动的时候，spring的全局bean的管理器会去xml配置文件中扫描的包下面获取到所有的类，并根据你使用的注解，进行对应的封装，封装到全局的bean容器中进行管理，一旦容器初始化完毕，beanID以及bean实例化的类对象信息就全部存在了，现在我们需要在某个service里面调用另一个bean的某个方法的时候，我们只需要依赖注入进来另一个bean的Id即可，调用的时候，spring会去初始化完成的bean容器中获取即可，如果存在就把依赖的bean的类的实例化对象返回给你，你就可以调用依赖的bean的相关方法或属性等；</p>
+<h2 id="自定义实现IOC"><a href="#自定义实现IOC" class="headerlink" title="自定义实现IOC"></a>自定义实现IOC</h2><p>首先我们自定义两个注解，我们知道在业务类中经常使用 @Service来标记这个类是bean管理的类，而@Autowired或者@Resource用于bean之间相互依赖使用，</p>
+<blockquote>
+<p>自定义注解</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 自定义注解  service 注入bean容器</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Target(&#123; ElementType.TYPE &#125;)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> SelfService &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//模拟@Autowired注解</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Target(&#123; TYPE, FIELD, METHOD &#125;)</span></span><br><span class="line"><span class="meta">@Retention(RUNTIME)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> SelfAutowired &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>加载类信息到容器中</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//模拟ClassPathXmlApplicationContext</span></span><br><span class="line">SelfPathXmlApplicationContext app = <span class="keyword">new</span> SelfPathXmlApplicationContext(<span class="string">&quot;com.congge.service.impl&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SelfPathXmlApplicationContext</span> </span>&#123;</span><br><span class="line"><span class="keyword">private</span> String packageName;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 封装所有的bean容器</span></span><br><span class="line"><span class="keyword">private</span> ConcurrentHashMap&lt;String, Object&gt; beans = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 该类被创建出来的时候加载</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> packageName</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">SelfPathXmlApplicationContext</span><span class="params">(String packageName)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	beans = <span class="keyword">new</span> ConcurrentHashMap&lt;String, Object&gt;();</span><br><span class="line">	<span class="keyword">this</span>.packageName = packageName;</span><br><span class="line">	initBeans();</span><br><span class="line">	initEntryField();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 初始化bean的实例对象的所有属性</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initEntryField</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	<span class="comment">// 1.遍历所有的bean容器对象</span></span><br><span class="line">	<span class="keyword">for</span> (Entry&lt;String, Object&gt; entry : beans.entrySet()) &#123;</span><br><span class="line">		<span class="comment">// 2.判断属性上面是否有加注解</span></span><br><span class="line">		Object bean = entry.getValue();</span><br><span class="line">		attriAssign(bean);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 根据beanId获取bean名称</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> beanId</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">getBean</span><span class="params">(String beanId)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (StringUtils.isEmpty(beanId)) &#123;</span><br><span class="line">		<span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">&quot;beanId参数不能为空&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 1.从spring容器获取bean</span></span><br><span class="line">	Object object = beans.get(beanId);</span><br><span class="line">	<span class="comment">// attriAssign(object);</span></span><br><span class="line">	<span class="keyword">return</span> object;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取扫描包下面的所有bean</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initBeans</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	<span class="comment">// 1.使用java的反射机制扫包,[获取当前包下所有的类]</span></span><br><span class="line">	List&lt;Class&lt;?&gt;&gt; classes = ClassParseUtil.getClasses(packageName);</span><br><span class="line">	<span class="comment">// 2、判断类上面是否存在注入的bean的注解</span></span><br><span class="line">	ConcurrentHashMap&lt;String, Object&gt; classExisAnnotation = findClassExisAnnotation(classes);</span><br><span class="line">	<span class="keyword">if</span> (classExisAnnotation == <span class="keyword">null</span> || classExisAnnotation.isEmpty()) &#123;</span><br><span class="line">		<span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">&quot;该包下没有任何类加上注解&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 判断类上是否存在注入自定义的bean的注解</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> classes</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ConcurrentHashMap&lt;String, Object&gt; <span class="title">findClassExisAnnotation</span><span class="params">(List&lt;Class&lt;?&gt;&gt; classes)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (Class&lt;?&gt; classInfo : classes) &#123;</span><br><span class="line">		<span class="comment">// 判断类上是否有注解 [获取自定义的service注解]</span></span><br><span class="line">		SelfService annotation = classInfo.getAnnotation(SelfService.class);</span><br><span class="line">		<span class="keyword">if</span> (annotation != <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="comment">// 获取当前类的类名</span></span><br><span class="line">			String className = classInfo.getSimpleName();</span><br><span class="line">			String beanId = toLowerCaseFirstOne(className);</span><br><span class="line">			Object newInstance = newInstance(classInfo);</span><br><span class="line">			beans.put(beanId, newInstance);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> beans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 首字母转小写</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">toLowerCaseFirstOne</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (Character.isLowerCase(s.charAt(<span class="number">0</span>)))</span><br><span class="line">		<span class="keyword">return</span> s;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="keyword">return</span> (<span class="keyword">new</span> StringBuilder()).append(Character.toLowerCase(s.charAt(<span class="number">0</span>))).append(s.substring(<span class="number">1</span>)).toString();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 通过class名称获取类的实例化对象</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> classInfo</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> ClassNotFoundException</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> InstantiationException</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> IllegalAccessException</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">newInstance</span><span class="params">(Class&lt;?&gt; classInfo)</span></span></span><br><span class="line"><span class="function">		<span class="keyword">throws</span> ClassNotFoundException, InstantiationException, IllegalAccessException </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> classInfo.newInstance();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 依赖注入注解原理</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> object</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">attriAssign</span><span class="params">(Object object)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 1.使用反射机制,获取当前类的所有属性</span></span><br><span class="line">	Class&lt;? extends Object&gt; classInfo = object.getClass();</span><br><span class="line">	Field[] declaredFields = classInfo.getDeclaredFields();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 2.判断当前类属性是否存在注解</span></span><br><span class="line">	<span class="keyword">for</span> (Field field : declaredFields) &#123;</span><br><span class="line">		SelfAutowired extResource = field.getAnnotation(SelfAutowired.class);</span><br><span class="line">		<span class="keyword">if</span> (extResource != <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="comment">// 获取属性名称</span></span><br><span class="line">			String beanId = field.getName();</span><br><span class="line">			Object bean = getBean(beanId);</span><br><span class="line">			<span class="keyword">if</span> (bean != <span class="keyword">null</span>) &#123;</span><br><span class="line">				<span class="comment">// 3.默认使用属性名称，查找bean容器对象 1参数 当前对象 2参数给属性赋值</span></span><br><span class="line">				field.setAccessible(<span class="keyword">true</span>); <span class="comment">// 允许访问私有属性</span></span><br><span class="line">				field.set(object, bean);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Bean的作用域"><a href="#Bean的作用域" class="headerlink" title="Bean的作用域"></a>Bean的作用域</h1><blockquote>
+<p>Singleton 单例模式(多线程下不安全)</p>
+</blockquote>
+<p><strong>singleton</strong>：单例模式，Spring IoC 容器中只会存在一个共享的 Bean 实例，无论有多少个Bean 引用它，始终指向同一对象。该模式在多线程下是不安全的。Spring中默认都是单例Bean</p>
+<blockquote>
+<p>Prototype 原型Bean   </p>
+</blockquote>
+<p><strong>prototype</strong>:原型模式，每次通过 Spring 容器获取 prototype 定义的 bean 时，容器都将创建一个新的 Bean 实例，每个 Bean 实例都有自己的属性和状态，而 singleton 全局只有一个对象。根据经验，对有状态的bean 使用prototype 作用域，而对无状态的bean 使用singleton 作用域。</p>
+<ul>
+<li>有状态/无状态: 有状态的Bean就是需要Bean去存储信息</li>
+</ul>
+<blockquote>
+<p>Request</p>
+</blockquote>
+<p><strong>Request</strong>：在一次 Http 请求中，容器会返回该 Bean 的同一实例。而对不同的 Http 请求则会产生新的 Bean，而且该 bean 仅在当前 Http Request 内有效,当前 Http 请求结束，该 bean 实例也将会被销毁。</p>
+<blockquote>
+<p>session</p>
+</blockquote>
+<p><strong>Session</strong>：在一次 Http Session 中，容器会返回该Bean 的同一实例。而对不同的 Session 请求则会创建新的实例，该 bean 实例仅在当前 Session 内有效。同 Http 请求相同，每一次session 请求创建新的实例，而不同的实例之间不共享属性，且实例仅在自己的 session 请求内有效，请求结束，则实例将被销毁</p>
+<blockquote>
+<p>Global Session</p>
+</blockquote>
+<p><strong>Global Session</strong>：在一个全局的 Http Session 中，容器会返回该 Bean 的同一个实例，仅在使用 portlet context 时有效。</p>
+<h1 id="Bean的生命周期"><a href="#Bean的生命周期" class="headerlink" title="Bean的生命周期"></a>Bean的生命周期</h1><p><img src="/pic/Bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.jpg"></p>
+<h1 id="Spring-依赖注入"><a href="#Spring-依赖注入" class="headerlink" title="Spring 依赖注入"></a>Spring 依赖注入</h1><h2 id="四种注入方式"><a href="#四种注入方式" class="headerlink" title="四种注入方式"></a>四种注入方式</h2><ul>
+<li>构造器注入</li>
+<li>setter方法注入</li>
+<li>静态工厂注入</li>
+<li>实例工厂</li>
+</ul>
+<h2 id="自动注入的四种方式"><a href="#自动注入的四种方式" class="headerlink" title="自动注入的四种方式"></a>自动注入的四种方式</h2><ol>
+<li><p>byName：通过参数名自动装配，Spring 容器在配置文件中发现bean 的autowire 属性被设置成 byname，之后容器试图匹配、装配和该 bean 的属性具有相同名字的bean。</p>
+</li>
+<li><p>byType：通过参数类型自动装配，Spring 容器在配置文件中发现 bean 的 autowire 属性被设置成byType，之后容器试图匹配、装配和该bean 的属性具有相同类型的bean。如果有多个 bean 符合条件，则抛出错误。</p>
+</li>
+<li><p>constructor：这个方式类似于 byType， 但是要提供给构造器参数，如果没有确定的带参数的构造器参数类型，将会抛出异常。</p>
+</li>
+<li><p>autodetect：首先尝试使用 constructor 来自动装配，如果无法工作，则使用byType 方式。</p>
+</li>
+</ol>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Java/">Java</a></div><div class="post_share"><div class="social-share" data-image="/pic/Spring%E7%89%B9%E5%BE%81.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2020/11/12/ThreadLocal%E8%A7%A3%E6%9E%90/"><img class="next-cover" src="https://img-blog.csdnimg.cn/20200422164055250.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Jic2N6MDA3,size_16,color_FFFFFF,t_70" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">ThreadLocal解析</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2020/11/12/ThreadLocal解析/" title="ThreadLocal解析"><img class="cover" src="https://img-blog.csdnimg.cn/20200422164055250.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Jic2N6MDA3,size_16,color_FFFFFF,t_70" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-11-12</div><div class="title">ThreadLocal解析</div></div></a></div><div><a href="/2020/11/10/锁升级与对比/" title="锁升级与对比"><img class="cover" src="/pic/%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-11-10</div><div class="title">锁升级与对比</div></div></a></div><div><a href="/2020/11/10/AQS源码解读/" title="AQS源码解读"><img class="cover" src="https://img-blog.csdnimg.cn/20201024103405147.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1RaODQ1MTk1NDg1,size_16,color_FFFFFF,t_70#pic_center" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-11-10</div><div class="title">AQS源码解读</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Alan_</div><div class="author-info__description">Code Change The Word</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Alan-Joker" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:tony_xb@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=1623249948&amp;site=qq&amp;menu=yes" target="_blank" title="QQ"><i class="fab fa-qq"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Sping%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6"><span class="toc-number">1.1.</span> <span class="toc-text">Sping核心组件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9D%97"><span class="toc-number">1.2.</span> <span class="toc-text">Spring常用模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring%E4%B8%BB%E8%A6%81jar%E5%8C%85"><span class="toc-number">1.3.</span> <span class="toc-text">Spring主要jar包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring%E5%B8%B8%E7%94%A8%E6%B3%A8%E8%A7%A3"><span class="toc-number">1.4.</span> <span class="toc-text">Spring常用注解</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-IOC%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">Spring IOC原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-number">2.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Ioc%E5%AE%B9%E5%99%A8%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.2.</span> <span class="toc-text">Ioc容器实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AE%9E%E7%8E%B0IOC"><span class="toc-number">2.3.</span> <span class="toc-text">自定义实现IOC</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Bean%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-number">3.</span> <span class="toc-text">Bean的作用域</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">4.</span> <span class="toc-text">Bean的生命周期</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5"><span class="toc-number">5.</span> <span class="toc-text">Spring 依赖注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E7%A7%8D%E6%B3%A8%E5%85%A5%E6%96%B9%E5%BC%8F"><span class="toc-number">5.1.</span> <span class="toc-text">四种注入方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E6%B3%A8%E5%85%A5%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="toc-number">5.2.</span> <span class="toc-text">自动注入的四种方式</span></a></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2020/11/14/Spring%E6%A1%86%E6%9E%B6%E6%80%BB%E7%BB%93/" title="Spring框架总结"><img src="/pic/Spring%E7%89%B9%E5%BE%81.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Spring框架总结"/></a><div class="content"><a class="title" href="/2020/11/14/Spring%E6%A1%86%E6%9E%B6%E6%80%BB%E7%BB%93/" title="Spring框架总结">Spring框架总结</a><time datetime="2020-11-14T03:03:17.000Z" title="发表于 2020-11-14 11:03:17">2020-11-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/11/12/ThreadLocal%E8%A7%A3%E6%9E%90/" title="ThreadLocal解析"><img src="https://img-blog.csdnimg.cn/20200422164055250.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Jic2N6MDA3,size_16,color_FFFFFF,t_70" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ThreadLocal解析"/></a><div class="content"><a class="title" href="/2020/11/12/ThreadLocal%E8%A7%A3%E6%9E%90/" title="ThreadLocal解析">ThreadLocal解析</a><time datetime="2020-11-12T12:14:49.000Z" title="发表于 2020-11-12 20:14:49">2020-11-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/11/10/%E9%94%81%E5%8D%87%E7%BA%A7%E4%B8%8E%E5%AF%B9%E6%AF%94/" title="锁升级与对比"><img src="/pic/%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="锁升级与对比"/></a><div class="content"><a class="title" href="/2020/11/10/%E9%94%81%E5%8D%87%E7%BA%A7%E4%B8%8E%E5%AF%B9%E6%AF%94/" title="锁升级与对比">锁升级与对比</a><time datetime="2020-11-10T14:07:44.000Z" title="发表于 2020-11-10 22:07:44">2020-11-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/11/10/AQS%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/" title="AQS源码解读"><img src="https://img-blog.csdnimg.cn/20201024103405147.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1RaODQ1MTk1NDg1,size_16,color_FFFFFF,t_70#pic_center" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AQS源码解读"/></a><div class="content"><a class="title" href="/2020/11/10/AQS%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/" title="AQS源码解读">AQS源码解读</a><time datetime="2020-11-10T13:31:06.000Z" title="发表于 2020-11-10 21:31:06">2020-11-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/10/16/Java%E5%90%8E%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0-Java%E8%99%9A%E6%8B%9F%E6%9C%BA/" title="Java后端基础复习---Java虚拟机"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Java后端基础复习---Java虚拟机"/></a><div class="content"><a class="title" href="/2020/10/16/Java%E5%90%8E%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0-Java%E8%99%9A%E6%8B%9F%E6%9C%BA/" title="Java后端基础复习---Java虚拟机">Java后端基础复习---Java虚拟机</a><time datetime="2020-10-16T08:14:15.000Z" title="发表于 2020-10-16 16:14:15">2020-10-16</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By Alan_</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'h6wvO0pPfvBht9mEPGani2rG-MdYXbMMI',
+      appKey: 'vj4PRecDeAq4WtHwIglfft5V',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign({}, initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else $.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js', initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.querySelector('#vcomment'),loadValine)
+  else setTimeout(() => loadValine(), 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="true"></script></div></body></html>
