@@ -1,0 +1,241 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>键盘键入A时操作系统发生了什么 | Alan_</title><meta name="keywords" content="操作系统"><meta name="author" content="Alan_"><meta name="copyright" content="Alan_"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="设备控制器我们的电脑设备可以接非常多的输入输出设备，比如键盘、鼠标、显示器、网卡、硬盘、打印机、音响等等，每个设备的用法和功能都不同，那操作系统是如何把这些输入输出设备统一管理的呢? 为了屏蔽设备之间的差异，每个设备都有一个叫设备控制器（*Device Control*） 的组件，比如硬盘有硬盘控制器、显示器有视频控制器等。  因为这些控制器都很清楚的知道对应设备的用法和功能，所以 CPU 是通过">
+<meta property="og:type" content="article">
+<meta property="og:title" content="键盘键入A时操作系统发生了什么">
+<meta property="og:url" content="http://example.com/2021/04/28/%E9%94%AE%E7%9B%98%E9%94%AE%E5%85%A5A%E6%97%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88/index.html">
+<meta property="og:site_name" content="Alan_">
+<meta property="og:description" content="设备控制器我们的电脑设备可以接非常多的输入输出设备，比如键盘、鼠标、显示器、网卡、硬盘、打印机、音响等等，每个设备的用法和功能都不同，那操作系统是如何把这些输入输出设备统一管理的呢? 为了屏蔽设备之间的差异，每个设备都有一个叫设备控制器（*Device Control*） 的组件，比如硬盘有硬盘控制器、显示器有视频控制器等。  因为这些控制器都很清楚的知道对应设备的用法和功能，所以 CPU 是通过">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/pic/%E8%AE%BE%E5%A4%87%E6%8E%A7%E5%88%B6%E5%99%A8.png">
+<meta property="article:published_time" content="2021-04-28T11:26:12.000Z">
+<meta property="article:modified_time" content="2021-04-29T01:09:49.581Z">
+<meta property="article:author" content="Alan_">
+<meta property="article:tag" content="操作系统">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/pic/%E8%AE%BE%E5%A4%87%E6%8E%A7%E5%88%B6%E5%99%A8.png"><link rel="shortcut icon" href="/img/head.jpg"><link rel="canonical" href="http://example.com/2021/04/28/%E9%94%AE%E7%9B%98%E9%94%AE%E5%85%A5A%E6%97%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"top-center"},
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-04-29 09:09:49'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/head.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">61</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/pic/%E8%AE%BE%E5%A4%87%E6%8E%A7%E5%88%B6%E5%99%A8.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Alan_</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">键盘键入A时操作系统发生了什么</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-04-28T11:26:12.000Z" title="发表于 2021-04-28 19:26:12">2021-04-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-04-29T01:09:49.581Z" title="更新于 2021-04-29 09:09:49">2021-04-29</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>9分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="设备控制器"><a href="#设备控制器" class="headerlink" title="设备控制器"></a>设备控制器</h1><p>我们的电脑设备可以接非常多的输入输出设备，比如键盘、鼠标、显示器、网卡、硬盘、打印机、音响等等，每个设备的用法和功能都不同，那操作系统是如何把这些输入输出设备统一管理的呢?</p>
+<p>为了屏蔽设备之间的差异，每个设备都有一个叫<strong>设备控制器（*Device Control*）</strong> 的组件，比如硬盘有硬盘控制器、显示器有视频控制器等。</p>
+<p><img src="/pic/%E8%AE%BE%E5%A4%87%E6%8E%A7%E5%88%B6%E5%99%A8.png"></p>
+<p>因为这些控制器都很清楚的知道对应设备的用法和功能，所以 CPU 是通过设备控制器来和设备打交道的。</p>
+<p>设备控制器里有芯片，它可执行自己的逻辑，也有自己的寄存器，用来与 CPU 进行通信，比如：</p>
+<ul>
+<li>通过写入这些寄存器，操作系统可以命令设备发送数据、接收数据、开启或关闭，或者执行某些其他操作。</li>
+<li>通过读取这些寄存器，操作系统可以了解设备的状态，是否准备好接收一个新的命令等。</li>
+</ul>
+<p>实际上，控制器是有三类寄存器，它们分别是<strong>状态寄存器（*Status Register*）</strong>、<strong>命令寄存器（*Command Register*）</strong>以及<strong>数据寄存器（*Data Register*）</strong>，如下图：</p>
+<p>这三个寄存器的作用：</p>
+<ul>
+<li><em>数据寄存器</em>，CPU 向 I/O 设备写入需要传输的数据，比如要打印的内容是「Hello」，CPU 就要先发送一个 H 字符给到对应的 I/O 设备。</li>
+<li><em>命令寄存器</em>，CPU 发送一个命令，告诉 I/O 设备，要进行输入/输出操作，于是就会交给 I/O 设备去工作，任务完成后，会把状态寄存器里面的状态标记为完成。</li>
+<li><em>状态寄存器</em>，目的是告诉 CPU ，现在已经在工作或工作已经完成，如果已经在工作状态，CPU 再发送数据或者命令过来，都是没有用的，直到前面的工作已经完成，状态寄存标记成已完成，CPU 才能发送下一个字符和命令。</li>
+</ul>
+<p>CPU 通过读、写设备控制器中的寄存器来控制设备，这可比 CPU 直接控制输入输出设备，要方便和标准很多。</p>
+<p>另外， 输入输出设备可分为两大类 ：<strong>块设备（*Block Device*）</strong>和<strong>字符设备（*Character Device*）</strong>。</p>
+<ul>
+<li><em>块设备</em>，把数据存储在固定大小的块中，每个块有自己的地址，硬盘、USB 是常见的块设备。</li>
+<li><em>字符设备</em>，以字符为单位发送或接收一个字符流，字符设备是不可寻址的，也没有任何寻道操作，鼠标是常见的字符设备。</li>
+</ul>
+<p>块设备通常传输的数据量会非常大，于是控制器设立了一个可读写的<strong>数据缓冲区</strong>。</p>
+<ul>
+<li>CPU 写入数据到控制器的缓冲区时，当缓冲区的数据囤够了一部分，才会发给设备。</li>
+<li>CPU 从控制器的缓冲区读取数据时，也需要缓冲区囤够了一部分，才拷贝到内存。</li>
+</ul>
+<p>这样做是为了，减少对设备的操作次数。</p>
+<p>那 CPU 是如何与设备的控制寄存器和数据缓冲区进行通信的？存在两个方法：</p>
+<ul>
+<li><em>端口 I/O</em>，每个控制寄存器被分配一个 I/O 端口，可以通过特殊的汇编指令操作这些寄存器，比如 <code>in/out</code> 类似的指令。</li>
+<li><em>内存映射 I/O</em>，将所有控制寄存器映射到内存空间中，这样就可以像读写内存一样读写数据缓冲区。</li>
+</ul>
+<h1 id="IO控制方式"><a href="#IO控制方式" class="headerlink" title="IO控制方式"></a>IO控制方式</h1><p>在前面我知道，每种设备都有一个设备控制器，控制器相当于一个小 CPU，它可以自己处理一些事情，但有个问题是，当 CPU 给设备发送了一个指令，让设备控制器去读设备的数据，它读完的时候，要怎么通知 CPU 呢？</p>
+<p>控制器的寄存器一般会有状态标记位，用来标识输入或输出操作是否完成。于是，我们想到第一种<strong>轮询等待</strong>的方法，让 CPU 一直查寄存器的状态，直到状态标记为完成，很明显，这种方式非常的傻瓜，它会占用 CPU 的全部时间。</p>
+<p>那我们就想到第二种方法 —— <strong>中断</strong>，通知操作系统数据已经准备好了。我们一般会有一个硬件的<strong>中断控制器</strong>，当设备完成任务后触发中断到中断控制器，中断控制器就通知 CPU，一个中断产生了，CPU 需要停下当前手里的事情来处理中断。</p>
+<p>另外，中断有两种，一种<strong>软中断</strong>，例如代码调用 <code>INT</code> 指令触发，一种是<strong>硬件中断</strong>，就是硬件通过中断控制器触发的。</p>
+<p>但中断的方式对于频繁读写数据的磁盘，并不友好，这样 CPU 容易经常被打断，会占用 CPU 大量的时间。对于这一类设备的问题的解决方法是使用 <strong>DMA（*Direct Memory Access*）</strong> 功能，它可以使得设备在 CPU 不参与的情况下，能够自行完成把设备 I/O 数据放入到内存。那要实现 DMA 功能要有 「DMA 控制器」硬件的支持。</p>
+<p><img src="/pic/dma.jpg"></p>
+<p>DMA 的工作方式如下：</p>
+<ul>
+<li>CPU 需对 DMA 控制器下发指令，告诉它想读取多少数据，读完的数据放在内存的某个地方就可以了；</li>
+<li>接下来，DMA 控制器会向磁盘控制器发出指令，通知它从磁盘读数据到其内部的缓冲区中，接着磁盘控制器将缓冲区的数据传输到内存；</li>
+<li>当磁盘控制器把数据传输到内存的操作完成后，磁盘控制器在总线上发出一个确认成功的信号到 DMA 控制器；</li>
+<li>DMA 控制器收到信号后，DMA 控制器发中断通知 CPU 指令完成，CPU 就可以直接用内存里面现成的数据了；</li>
+</ul>
+<p>可以看到， CPU 当要读取磁盘数据的时候，只需给 DMA 控制器发送指令，然后返回去做其他事情，当磁盘数据拷贝到内存后，DMA 控制机器通过中断的方式，告诉 CPU 数据已经准备好了，可以从内存读数据了。仅仅在传送开始和结束时需要 CPU 干预。</p>
+<h1 id="设备驱动程序"><a href="#设备驱动程序" class="headerlink" title="设备驱动程序"></a>设备驱动程序</h1><p>虽然设备控制器屏蔽了设备的众多细节，但每种设备的控制器的寄存器、缓冲区等使用模式都是不同的，所以为了屏蔽「设备控制器」的差异，引入了<strong>设备驱动程序</strong>。</p>
+<p>设备控制器不属于操作系统范畴，它是属于硬件，而设备驱动程序属于操作系统的一部分，操作系统的内核代码可以像本地调用代码一样使用设备驱动程序的接口，而设备驱动程序是面向设备控制器的代码，它发出操控设备控制器的指令后，才可以操作设备控制器。</p>
+<p>不同的设备控制器虽然功能不同，但是<strong>设备驱动程序会提供统一的接口给操作系统</strong>，这样不同的设备驱动程序，就可以以相同的方式接入操作系统。如下图：</p>
+<p>前面提到了不少关于中断的事情，设备完成了事情，则会发送中断来通知操作系统。那操作系统就需要有一个地方来处理这个中断，这个地方也就是在设备驱动程序里，它会及时响应控制器发来的中断请求，并根据这个中断的类型调用响应的<strong>中断处理程序</strong>进行处理。</p>
+<p>通常，设备驱动程序初始化的时候，要先注册一个该设备的中断处理函数。</p>
+<p>我们来看看，中断处理程序的处理流程：</p>
+<ol>
+<li>在 I/O 时，设备控制器如果已经准备好数据，则会通过中断控制器向 CPU 发送中断请求；</li>
+<li>保护被中断进程的 CPU 上下文；</li>
+<li>转入相应的设备中断处理函数；</li>
+<li>进行中断处理；</li>
+<li>恢复被中断进程的上下文；</li>
+</ol>
+<h1 id="通用块层"><a href="#通用块层" class="headerlink" title="通用块层"></a>通用块层</h1><p>对于块设备，为了减少不同块设备的差异带来的影响，Linux 通过一个统一的<strong>通用块层</strong>，来管理不同的块设备。</p>
+<p>通用块层是处于文件系统和磁盘驱动中间的一个块设备抽象层，它主要有两个功能：</p>
+<ul>
+<li>第一个功能，向上为文件系统和应用程序，提供访问块设备的标准接口，向下把各种不同的磁盘设备抽象为统一的块设备，并在内核层面，提供一个框架来管理这些设备的驱动程序；</li>
+<li>第二功能，通用层还会给文件系统和应用程序发来的 I/O 请求排队，接着会对队列重新排序、请求合并等方式，也就是 I/O 调度，主要目的是为了提高磁盘读写的效率。</li>
+</ul>
+<p>Linux 内存支持 5 种 I/O 调度算法，分别是：</p>
+<ul>
+<li>没有调度算法</li>
+<li>先入先出调度算法</li>
+<li>完全公平调度算法</li>
+<li>优先级调度</li>
+<li>最终期限调度算法</li>
+</ul>
+<p>第一种，没有调度算法，是的，你没听错，它不对文件系统和应用程序的 I/O 做任何处理，这种算法常用在虚拟机 I/O 中，此时磁盘 I/O 调度算法交由物理机系统负责。</p>
+<p>第二种，先入先出调度算法，这是最简单的 I/O 调度算法，先进入 I/O 调度队列的 I/O 请求先发生。</p>
+<p>第三种，完全公平调度算法，大部分系统都把这个算法作为默认的 I/O 调度器，它为每个进程维护了一个 I/O 调度队列，并按照时间片来均匀分布每个进程的 I/O 请求。</p>
+<p>第四种，优先级调度算法，顾名思义，优先级高的 I/O 请求先发生， 它适用于运行大量进程的系统，像是桌面环境、多媒体应用等。</p>
+<p>第五种，最终期限调度算法，分别为读、写请求创建了不同的 I/O 队列，这样可以提高机械磁盘的吞吐量，并确保达到最终期限的请求被优先处理，适用于在 I/O 压力比较大的场景，比如数据库等。</p>
+<h1 id="键盘敲入字母时，期间发生了什么？"><a href="#键盘敲入字母时，期间发生了什么？" class="headerlink" title="键盘敲入字母时，期间发生了什么？"></a>键盘敲入字母时，期间发生了什么？</h1><p><img src="/pic/cpu%E7%A1%AC%E4%BB%B6%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg"></p>
+<p>CPU 里面的内存接口，直接和系统总线通信，然后系统总线再接入一个 I/O 桥接器，这个 I/O 桥接器，另一边接入了内存总线，使得 CPU 和内存通信。再另一边，又接入了一个 I/O 总线，用来连接 I/O 设备，比如键盘、显示器等。</p>
+<p>那当用户输入了键盘字符，<strong>键盘控制器</strong>就会产生扫描码数据，并将其缓冲在键盘控制器的寄存器中，紧接着键盘控制器通过总线给 CPU 发送<strong>中断请求</strong>。</p>
+<p>CPU 收到中断请求后，操作系统会<strong>保存被中断进程的 CPU 上下文</strong>，然后调用键盘的<strong>中断处理程序</strong>。</p>
+<p>键盘的中断处理程序是在<strong>键盘驱动程序</strong>初始化时注册的，那键盘<strong>中断处理函数</strong>的功能就是从键盘控制器的寄存器的缓冲区读取扫描码，再根据扫描码找到用户在键盘输入的字符，如果输入的字符是显示字符，那就会把扫描码翻译成对应显示字符的  ASCII 码，比如用户在键盘输入的是字母 A，是显示字符，于是就会把扫描码翻译成 A 字符的 ASCII 码。</p>
+<p>得到了显示字符的 ASCII 码后，就会把 ASCII 码放到「读缓冲区队列」，接下来就是要把显示字符显示屏幕了，显示设备的驱动程序会定时从「读缓冲区队列」读取数据放到「写缓冲区队列」，最后把「写缓冲区队列」的数据一个一个写入到显示设备的控制器的寄存器中的数据缓冲区，最后将这些数据显示在屏幕里。</p>
+<p>显示出结果后，<strong>恢复被中断进程的上下文</strong>。</p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></div><div class="post_share"><div class="social-share" data-image="/pic/%E8%AE%BE%E5%A4%87%E6%8E%A7%E5%88%B6%E5%99%A8.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/04/29/a-1-1%E7%9A%84%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B/"><img class="prev-cover" src="/pic/%E5%86%AF%E8%AF%BA%E4%BE%9D%E6%9B%BC%E6%A8%A1%E5%9E%8B.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">a=1+1的执行过程</div></div></a></div><div class="next-post pull-right"><a href="/2021/04/25/DMA%E4%B8%8E%E9%9B%B6%E6%8B%B7%E8%B4%9D%E6%8A%80%E6%9C%AF/"><img class="next-cover" src="/pic/dma%E8%BF%87%E7%A8%8B.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">DMA与零拷贝技术</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/03/23/缓存一致性/" title="缓存一致性"><img class="cover" src="/pic/CPU%E7%BC%93%E5%AD%98.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-23</div><div class="title">缓存一致性</div></div></a></div><div><a href="/2021/03/21/进程与线程/" title="进程与线程"><img class="cover" src="/pic/%E8%BF%9B%E7%A8%8B%E5%88%87%E6%8D%A2.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-21</div><div class="title">进程与线程</div></div></a></div><div><a href="/2021/03/22/进程间通信/" title="进程间通信"><img class="cover" src="/pic/TCPSocket.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-22</div><div class="title">进程间通信</div></div></a></div><div><a href="/2021/03/21/进程调度与调度算法/" title="进程调度与调度算法"><img class="cover" src="/pic/%E5%A4%9A%E7%BA%A7%E5%8F%8D%E9%A6%88%E9%98%9F%E5%88%97%E7%AE%97%E6%B3%95.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-21</div><div class="title">进程调度与调度算法</div></div></a></div><div><a href="/2021/03/22/页面置换算法/" title="页面置换算法"><img class="cover" src="/pic/%E6%97%B6%E9%92%9F%E4%B8%AD%E6%96%AD%E5%89%8D.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-22</div><div class="title">页面置换算法</div></div></a></div><div><a href="/2021/01/20/Operation-System/" title="Operation System"><img class="cover" src="/pic/1.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-20</div><div class="title">Operation System</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Alan_</div><div class="author-info__description">Code Change The Word</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">61</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Alan-Joker"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Alan-Joker" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:tony_xb@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=1623249948&amp;site=qq&amp;menu=yes" target="_blank" title="QQ"><i class="fab fa-qq"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%BE%E5%A4%87%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="toc-number">1.</span> <span class="toc-text">设备控制器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IO%E6%8E%A7%E5%88%B6%E6%96%B9%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">IO控制方式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F"><span class="toc-number">3.</span> <span class="toc-text">设备驱动程序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%80%9A%E7%94%A8%E5%9D%97%E5%B1%82"><span class="toc-number">4.</span> <span class="toc-text">通用块层</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%94%AE%E7%9B%98%E6%95%B2%E5%85%A5%E5%AD%97%E6%AF%8D%E6%97%B6%EF%BC%8C%E6%9C%9F%E9%97%B4%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">5.</span> <span class="toc-text">键盘敲入字母时，期间发生了什么？</span></a></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/04/29/a-1-1%E7%9A%84%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B/" title="a=1+1的执行过程"><img src="/pic/%E5%86%AF%E8%AF%BA%E4%BE%9D%E6%9B%BC%E6%A8%A1%E5%9E%8B.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="a=1+1的执行过程"/></a><div class="content"><a class="title" href="/2021/04/29/a-1-1%E7%9A%84%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B/" title="a=1+1的执行过程">a=1+1的执行过程</a><time datetime="2021-04-29T00:48:33.000Z" title="发表于 2021-04-29 08:48:33">2021-04-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/28/%E9%94%AE%E7%9B%98%E9%94%AE%E5%85%A5A%E6%97%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88/" title="键盘键入A时操作系统发生了什么"><img src="/pic/%E8%AE%BE%E5%A4%87%E6%8E%A7%E5%88%B6%E5%99%A8.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="键盘键入A时操作系统发生了什么"/></a><div class="content"><a class="title" href="/2021/04/28/%E9%94%AE%E7%9B%98%E9%94%AE%E5%85%A5A%E6%97%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88/" title="键盘键入A时操作系统发生了什么">键盘键入A时操作系统发生了什么</a><time datetime="2021-04-28T11:26:12.000Z" title="发表于 2021-04-28 19:26:12">2021-04-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/25/DMA%E4%B8%8E%E9%9B%B6%E6%8B%B7%E8%B4%9D%E6%8A%80%E6%9C%AF/" title="DMA与零拷贝技术"><img src="/pic/dma%E8%BF%87%E7%A8%8B.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DMA与零拷贝技术"/></a><div class="content"><a class="title" href="/2021/04/25/DMA%E4%B8%8E%E9%9B%B6%E6%8B%B7%E8%B4%9D%E6%8A%80%E6%9C%AF/" title="DMA与零拷贝技术">DMA与零拷贝技术</a><time datetime="2021-04-25T07:45:39.000Z" title="发表于 2021-04-25 15:45:39">2021-04-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/25/%E5%BA%94%E7%94%A8%E5%B1%82%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE-HTTPS/" title="应用层安全协议---HTTPS"><img src="/pic/tls%E5%9B%9B%E6%AC%A1%E6%8F%A1%E6%89%8B.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="应用层安全协议---HTTPS"/></a><div class="content"><a class="title" href="/2021/04/25/%E5%BA%94%E7%94%A8%E5%B1%82%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE-HTTPS/" title="应用层安全协议---HTTPS">应用层安全协议---HTTPS</a><time datetime="2021-04-25T06:42:20.000Z" title="发表于 2021-04-25 14:42:20">2021-04-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/25/TCP-IP%E4%BA%94%E5%B1%82%E6%A8%A1%E5%9E%8B/" title="TCP/IP五层模型"><img src="/pic/%E4%BC%A0%E8%BE%93%E5%B1%82.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="TCP/IP五层模型"/></a><div class="content"><a class="title" href="/2021/04/25/TCP-IP%E4%BA%94%E5%B1%82%E6%A8%A1%E5%9E%8B/" title="TCP/IP五层模型">TCP/IP五层模型</a><time datetime="2021-04-25T06:20:39.000Z" title="发表于 2021-04-25 14:20:39">2021-04-25</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Alan_</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'h6wvO0pPfvBht9mEPGani2rG-MdYXbMMI',
+      appKey: 'vj4PRecDeAq4WtHwIglfft5V',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign({}, initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else $.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js', initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.querySelector('#vcomment'),loadValine)
+  else setTimeout(() => loadValine(), 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="true"></script></div></body></html>
